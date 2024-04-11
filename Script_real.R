@@ -29,4 +29,4 @@ identification <- import("Módulo de sitio o ubicación.dta")
 
 write_rds(location,file = )
 
-help(write_rds)
+help(export)
