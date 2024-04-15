@@ -1,6 +1,8 @@
 #===========================================#
 # author: Andrés Felipe Silva Galvis
-# update: 11/04/2024
+# code: 202014837
+# version: 4.2.1
+# last update: 15/04/2024
 #===========================================#
 
 ## initial configuration
@@ -14,8 +16,7 @@ p_load(tidyverse, # funciones para manipular/limpiar conjuntos de datos.
        rio, # función import/export: permite leer/escribir archivos desde diferentes formatos. 
        skimr, # función skim: describe un conjunto de datos
        janitor, # función tabyl: frecuencias relativas
-       data.table
-)
+       data.table)
 
 
 # ======= 1. Importar/Exportar bases de datos =========#
@@ -48,11 +49,11 @@ identification <-  mutate(identification, businesstype = case_when(GRUPOS4 == "0
   
 # 2.2) 
 
-#P241 es edad según el diccionario
+#P241 es edad segun el diccionario.
 
-#Dividí los grupos etarios según la clasificacion que da el ministerio de salud
-#en su página minsalud.gov.co, todos los grupos etarios menores de 18 años
-#los agrupe en uno único para quedar con el requisito de 4 grup. etarios.
+#Dividi los grupos etarios según la clasificacion que da el ministerio de salud
+#en su pagina minsalud.gov.co. Todos los grupos etarios menores de 18 años
+#los agrupe en uno unico para cumplir con el requisito de 4 grupos etarios.
 
 identification <- mutate(identification, grupo_etario = case_when(P241<18 ~ "Menores_de_edad",
                                                                   P241>=18 & P241<=26  ~ "Jovenes",
@@ -63,8 +64,9 @@ identification <- mutate(identification, grupo_etario = case_when(P241<18 ~ "Men
 
 location <- mutate(location, ambulante = case_when( P3053 == 3 |
                                                     P3053 == 4 |
-                                                    P3053 == 5 ~ 1)) #el enunciado no dice que 
-# hacer con el resto de valores que toma P3053
+                                                    P3053 == 5 ~ 1)) 
+#el enunciado no dice que hacer con el resto de valores que toma P3053, por eso 
+#los deje quietos.
 
 #help(mutate)
 
@@ -75,8 +77,8 @@ location <- mutate(location, ambulante = case_when( P3053 == 3 |
 # 3.1)
 
 
-identification$ambulante <- location$ambulante #Como ambulante se encuentra en location
-#creamos la variabel en identification para poder usarla en el select.
+identification$ambulante <- location$ambulante #Como ambulante se encuentra en 
+#location, creamos la variable en identification para poder usarla en el select.
 
 
 vars_id <- c("DIRECTORIO","SECUENCIA_P", "SECUENCIA_ENCUESTA",
@@ -90,7 +92,7 @@ identification_sub <- select(.data = identification,
 # 3.2) 
 
 vars_loc <- c("DIRECTORIO","SECUENCIA_P", "SECUENCIA_ENCUESTA",
-              "ambulante","P3054","COD_DEPTO", "F_EXP")
+              "ambulante","P3054", "P469","COD_DEPTO", "F_EXP")
 
 location_sub <- select(.data = location, all_of(vars_loc))
 
@@ -116,9 +118,20 @@ base_unica <- left_join(location_sub,
 
 
 skim(data = base_unica)
-help(skim)
-
+# help(skim)
 summary(base_unica)
+
+#SE PUEDEN ENCONTRAR VARIAS VARIABLES CON MISSING VALUES. NOTE QUE LAS VARIABLES
+#CREADAS DURANTE ESTE EJERCICIO TIENEN ALTA PREVALENCIA DE NANs, PUES NO SE 
+#GENERARON CONDICIONES QUE AFECTARAN A TODOS LOS POSIBLES VALORES DE ESTA 
+#VARIABLE, Y ESTO HIZO QUE Rstudio CONVIRTIERA MUCHAS OBSERVACIONES DE ESTAS
+#VARIABLES EN MISSING VALUES.
+
+# DEL VALOR N_UNIQUE, SE PUEDE ANALIZAR QUE SE INCLUYEN 25 DEPARTAMENTOS, Y
+# 3 GRUPOS ETARIOS EN LA MUESTRA.
+
+
+
 
 
 
