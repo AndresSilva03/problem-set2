@@ -9,7 +9,8 @@
 
 ## initial configuration
 rm(list=ls()) # limpiar entorno
-setwd("C:/Users/silva/OneDrive/Escritorio/Penúltimo Semestre/Taller de R/githubR/problem-set2")
+
+####setwd("C:/Users/silva/OneDrive/Escritorio/Penúltimo Semestre/Taller de R/githubR/problem-set2")####
 
 ## load packages
 require(pacman)
@@ -111,7 +112,7 @@ location_sub <- select(.data = location, all_of(vars_loc))
 
 
 
-#============== 4. Combinar bases de datos ===========#
+# ======================== 4. Combinar bases de datos ======================== #
 
 
 
@@ -124,7 +125,7 @@ base_unica <- left_join(location_sub,
                                 "SECUENCIA_ENCUESTA" ))
 
 
-#================ 5. Descriptivas ====================#
+# =========================== 5. Descriptivas ================================ #
 
 
 #5.1) 
@@ -156,12 +157,15 @@ base_unica %>%  group_by(grupo_etario) %>%  summarise( frecuencia=n())
 base_unica %>%
   group_by(ambulante.x) %>%  summarise(frecuencia = n())
 
+base_unica %>%  summarise(mean = (mean(P469, na.rm = T)-1))
+
 
 # La mayoría de encuestados provienen de Sucre, Bolivar Atlántico y Magdalena. Bogotá tiene 
 # 1536 personas en esta base de datos. También, la gran mayoría de propietarios de micronegocios
 # en esta encuesta son adultos de entre 26 y 59 años, seguidos por los adultos mayores y los jóvenes
 # en último lugar. Finalmente, de todos los encuestados 37676 son ambulantes, contra el
-# 47077 que no lo son
+# 47077 que no lo son. Otra variable relevante es la P469, del cual se puede inferir que el
+# 32% tiene el negocio visible al público.
 
 
 
